@@ -42,13 +42,17 @@ In an initial experiment, the algorithm was applied to the depth frames. In the 
 - The infrared signals are absorbed by black and rough surfaces.
 - Object edges may not be clearly recognized, leading to increased noise.
 
-![Green Desk](images/GreenDesk.png){#fig:description}
+![Green Chair](images/GreenChair.png)
+_Figure 1: Green chair_
 
-In Figure @fig:description, a depth frame of a leather chair is shown. The distance values are color-coded to make the depth frame visible. Here, the noise in the lower red region is clearly visible. Although this noise doesn't present a major obstacle, the fluctuations in pixel values due to noise may exceed the movements of the operator, causing small movements to go undetected. Furthermore, the depth frames are calculated here using the Kullback-Leibler divergence, as shown in Listing \ref{lst:KullbackLeibler}. This allows the detection of whether movement has occurred. The noise is so large that the program detects a movement, and the image is colored green.
+In **Figure 1**, a depth frame of a leather chair is shown. The distance values are color-coded to make the depth frame visible. Here, the noise in the lower red region is clearly visible. Although this noise doesn't present a major obstacle, the fluctuations in pixel values due to noise may exceed the movements of the operator, causing small movements to go undetected. Furthermore, the depth frames are calculated here using the Kullback-Leibler divergence, as shown in Listing \ref{lst:KullbackLeibler}. This allows the detection of whether movement has occurred. The noise is so large that the program detects a movement, and the image is colored green.
 
-To address this issue, attempts were made to eliminate the noise. The depth frames were divided into $5 \times 5$ areas. The average value of each area was calculated, and each pixel in these areas was assigned the calculated average value. The result is shown in Figure \ref{fig:RedDesk}.
+To address this issue, attempts were made to eliminate the noise. The depth frames were divided into $5 \times 5$ areas. The average value of each area was calculated, and each pixel in these areas was assigned the calculated average value. The result is shown in Figure \ref{fig:RedChair}.
 
-In Figure ![Red Desk](images/RedDesk.png), it is evident that the noise has less impact on the resulting image. The leather chair is now drawn in red, indicating no movement. However, the noise is still large enough that small movements are not detected. Therefore, RGB frames were considered, and these were also calculated using the Kullback-Leibler divergence.
+![Red Chair](images/RedChair.png)
+_Figure 2: Red chair_
+
+In **Figure 2**, it is evident that the noise has less impact on the resulting image. The leather chair is now drawn in red, indicating no movement. However, the noise is still large enough that small movements are not detected. Therefore, RGB frames were considered, and these were also calculated using the Kullback-Leibler divergence.
 
 #### Advantages of Depth Frames:
 
@@ -64,12 +68,18 @@ In Figure ![Red Desk](images/RedDesk.png), it is evident that the noise has less
 Two tests were conducted using depth frames. The first test shows the inactivity of the user, and the second test detects user activity. A threshold value was assumed to determine activity or inactivity. The threshold values were determined based on tests and represent suitable values.
 
 - **Detecting Inactivity of the User:**
-  The subject sits motionless for ten minutes in front of the Kinect. The Kinect is approximately two meters away from the subject and is facing them. Every fifteenth frame is calculated. A threshold of 0.18 was assumed. If the Kullback-Leibler divergence is lower than the threshold, the user is considered inactive for the application. The result is shown in Figure ![KL inactivity test](images/KLTestInaktivitaet.png).
+  The subject sits motionless for ten minutes in front of the Kinect. The Kinect is approximately two meters away from the subject and is facing them. Every fifteenth frame is calculated. A threshold of 0.18 was assumed. If the Kullback-Leibler divergence is lower than the threshold, the user is considered inactive for the application. The result is shown in **Figure 3** .
+
+  ![KL inactivity test](images/KLTestInaktivitaet.png)
+  _Figure 3: Inactivity test_
 
   In this experiment, inactivity was detected with 100% probability. A total of 900 distances were calculated, with the maximum value being 0.151 and the minimum value being 0.096.
 
 - **Detecting Activity of the User:**
-  This test is used to detect user activity. To make the implementation more efficient, the movements of the subject were greatly reduced. The subject sits for four minutes in front of the Kinect, playing with their smartphone, and only moves one hand. The Kinect is approximately two meters away from the subject and is facing them. Every fifteenth frame is calculated. A threshold of 0.18 was assumed. If the Kullback-Leibler divergence is greater than the threshold, the user is considered active for the application. The result is shown in Figure ![KL activity test](images/KLTestAktivitaet.png).
+  This test is used to detect user activity. To make the implementation more efficient, the movements of the subject were greatly reduced. The subject sits for four minutes in front of the Kinect, playing with their smartphone, and only moves one hand. The Kinect is approximately two meters away from the subject and is facing them. Every fifteenth frame is calculated. A threshold of 0.18 was assumed. If the Kullback-Leibler divergence is greater than the threshold, the user is considered active for the application. The result is shown in **Figure 4**.
+
+  ![KL activity test](images/KLTestAktivitaet.png)
+  _Figure 4: Activity test_
 
   In this experiment, activity was detected with a probability of 99.78%. A total of 474 distances were calculated, with the maximum value being 0.435 and the minimum value being 0.175.
 
@@ -79,7 +89,10 @@ Two tests were conducted using depth frames. The first test shows the inactivity
 
 Since detecting small movements in the depth frames was not possible due to noise, the Kullback-Leibler divergence was applied to RGB frames, where the signal-to-noise ratio is much better. This method has a problem: RGB frames cannot be cropped forwards or backwards. If a person moves in the background of the user, activity is detected even though the user has not moved.
 
-To address this, a new solution was evaluated. Since the depth frames can be cropped backwards, the RGB frame information was fused with the depth frame information. As a result, only the person in a specific area is visible. The result is shown in Figure ![Colored Desk](images/ColoredDesk.png).
+To address this, a new solution was evaluated. Since the depth frames can be cropped backwards, the RGB frame information was fused with the depth frame information. As a result, only the person in a specific area is visible. The result is shown in **Figure 5**.
+
+![Colored Chair](images/ColoredChair.png)
+_Figure 5: Colored chair_
 
 #### Advantages of RGB Frames:
 
@@ -96,7 +109,10 @@ To address this, a new solution was evaluated. Since the depth frames can be cro
 
 A test was conducted using RGB frames to detect inactivity. This test shows that the signal-to-noise ratio is lower, allowing for better detection.
 
-The subject sits motionless for ten minutes in front of the Kinect. The Kinect is approximately two meters away from the subject and is facing them. Every third frame is calculated. A threshold of 0.003 was assumed. If the Kullback-Leibler divergence is lower than the threshold, the user is considered inactive for the application. The result is shown in Figure ![KL inactivity test with colored image](images/KLTestInaktivitaetRGB.png).
+The subject sits motionless for ten minutes in front of the Kinect. The Kinect is approximately two meters away from the subject and is facing them. Every third frame is calculated. A threshold of 0.003 was assumed. If the Kullback-Leibler divergence is lower than the threshold, the user is considered inactive for the application. The result is shown in **Figure 6**.
+
+![KL inactivity test with colored image](images/KLTestInaktivitaetRGB.png)
+_Figure 6: Inactivity test with colored image_
 
 In this experiment, inactivity was detected with 100% probability. A total of 2274 distances were calculated, with the maximum value being 0.00276 and the minimum value being 0.00127.
 
