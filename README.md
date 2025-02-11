@@ -1,6 +1,6 @@
-# Activity-Monitor-KL-Divergence-Report
+# Report: Activity Monitor with Kullback-Leibler Divergence
 
-Realtime activity monitor with Kullback–Leibler divergence
+Activity monitor with Kullback–Leibler divergence for realtime camera streams.
 
 ### Kullback-Leibler Divergence Implementation in Python
 
